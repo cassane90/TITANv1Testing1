@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { DiagnosisResult, DeviceCategory, ChatMessage } from "../../types";
+import { createError } from "../utils/errors";
 
 // Use import.meta.env for Vite environment variables
 function getAI() {
@@ -202,9 +203,18 @@ export async function runForensicAudit(
 
     result.sources = sources;
     return result;
-  } catch (err) {
+    return result;
+  } catch (err: any) {
     console.error("TITAN_SYNTHESIS_ERROR:", err);
-    throw err;
+    
+    if (err.message?.includes('429')) {
+       throw createError('API_QUOTA_EXCEEDED', err);
+    }
+    if (err.message?.includes('503')) {
+       throw createError('NETWORK_TIMEOUT', err);
+    }
+    
+    throw createError('UNKNOWN_ERROR', err);
   }
 }
 

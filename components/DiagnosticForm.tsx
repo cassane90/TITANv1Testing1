@@ -4,6 +4,7 @@ import { runForensicAudit } from '../src/services/geminiService';
 import { supabaseService } from '../src/services/supabaseService';
 import { cacheService } from '../src/services/cacheService';
 import { useApp } from '../providers/AppProvider';
+import { TitanError, logError } from '../src/utils/errors';
 
 const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => void }> = ({ onSuccess, onCancel }) => {
   const { refreshState } = useApp();
@@ -94,8 +95,18 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
       const log = await supabaseService.saveLog(category, desc, images, result);
       await refreshState();
       onSuccess(log);
+      onSuccess(log);
     } catch (e) {
-      alert("Analysis failed. Please try again.");
+      logError(e, 'DiagnosticForm.handleAudit');
+      
+      let msg = "Analysis failed. Please try again.";
+      if (e instanceof TitanError) {
+        msg = e.userMessage;
+      } else if (e instanceof Error && e.message.includes('429')) {
+         msg = "System Overload. TITAN is at capacity. Please try again in 1 minute.";
+      }
+      
+      alert(msg);
       setStep('intake');
     }
   };
