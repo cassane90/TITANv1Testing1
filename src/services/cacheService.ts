@@ -26,18 +26,36 @@ export const cacheService = {
   },
 
   /**
-   * Generates a unique key based on device category, symptoms, and coarse location.
-   * Coarse location ensures local specialist accuracy (approx 11km radius).
+   * Generates a simple hash from the first image base64 string
    */
-  generateKey(category: DeviceCategory, symptoms: string, lat?: number, lng?: number): string {
-    const normalized = this.normalizeSymptoms(symptoms);
-    // Round to 1 decimal place (~11km precision) to preserve specialist relevance
-    const locKey = lat && lng ? `_${lat.toFixed(1)}_${lng.toFixed(1)}` : '_global';
-    return `${CACHE_KEY_PREFIX}${category}_${normalized}${locKey}`;
+  generateImageHash(images: string[]): string {
+    if (!images || images.length === 0) return 'no_image';
+    // Use the first image (usually the main one)
+    // Take a substring from the middle to check for uniqueness without hashing the whole megabyte
+    const snippet = images[0].substring(images[0].length / 2, (images[0].length / 2) + 100);
+    let hash = 0;
+    for (let i = 0; i < snippet.length; i++) {
+      const char = snippet.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash.toString(16);
   },
 
-  get(category: DeviceCategory, symptoms: string, lat?: number, lng?: number): DiagnosisResult | null {
-    const key = this.generateKey(category, symptoms, lat, lng);
+  /**
+   * Generates a unique key based on device category, symptoms, coarse location, AND image hash.
+   * Coarse location ensures local specialist accuracy (approx 11km radius).
+   */
+  generateKey(category: DeviceCategory, symptoms: string, images: string[], lat?: number, lng?: number): string {
+    const normalized = this.normalizeSymptoms(symptoms);
+    const imgHash = this.generateImageHash(images);
+    // Round to 1 decimal place (~11km precision) to preserve specialist relevance
+    const locKey = lat && lng ? `_${lat.toFixed(1)}_${lng.toFixed(1)}` : '_global';
+    return `${CACHE_KEY_PREFIX}${category}_${normalized}_${imgHash}${locKey}`;
+  },
+
+  get(category: DeviceCategory, symptoms: string, images: string[], lat?: number, lng?: number): DiagnosisResult | null {
+    const key = this.generateKey(category, symptoms, images, lat, lng);
     const stored = localStorage.getItem(key);
     
     if (!stored) return null;
@@ -58,8 +76,8 @@ export const cacheService = {
     }
   },
 
-  set(category: DeviceCategory, symptoms: string, result: DiagnosisResult, lat?: number, lng?: number): void {
-    const key = this.generateKey(category, symptoms, lat, lng);
+  set(category: DeviceCategory, symptoms: string, images: string[], result: DiagnosisResult, lat?: number, lng?: number): void {
+    const key = this.generateKey(category, symptoms, images, lat, lng);
     const entry: CacheEntry = {
       timestamp: Date.now(),
       result

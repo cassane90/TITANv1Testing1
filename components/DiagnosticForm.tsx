@@ -41,6 +41,14 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
     }
   };
 
+  const cancelCamera = () => {
+    if (videoRef.current) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      if (stream) stream.getTracks().forEach(t => t.stop());
+    }
+    setStep('intake');
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -79,7 +87,8 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
     }
 
     // AI HANDSHAKE: Check cache first to avoid redundant AI usage
-    const cachedResult = cacheService.get(category, desc, location?.latitude, location?.longitude);
+    // We pass 'images' so the cache key includes the image hash (preventing stale results on new photos)
+    const cachedResult = cacheService.get(category, desc, images, location?.latitude, location?.longitude);
     
     try {
       let result;
@@ -90,7 +99,7 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
         setStatus("Analyzing your device...");
         result = await runForensicAudit(category, desc, images, location);
         // Store in cache for future users
-        cacheService.set(category, desc, result, location?.latitude, location?.longitude);
+        cacheService.set(category, desc, images, result, location?.latitude, location?.longitude);
       }
       
       setStatus("Saving results...");
@@ -128,9 +137,13 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
           <div className="camera-crosshair-h"></div>
           <div className="camera-crosshair-v"></div>
        </div>
-       <div className="h-40 bg-black border-t border-white/10 flex items-center justify-center">
-          <button onClick={capture} className="w-20 h-20 rounded-full border-4 border-primary p-1 active:scale-95 transition-all">
+       <div className="h-48 bg-black border-t border-white/10 flex flex-col items-center justify-center gap-4 px-6">
+          <button onClick={capture} className="w-20 h-20 rounded-full border-4 border-primary p-1 active:scale-95 transition-all shadow-lg shadow-primary/50">
              <div className="w-full h-full bg-primary rounded-full"></div>
+          </button>
+          <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Tap to Capture</p>
+          <button onClick={cancelCamera} className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors mt-2">
+            Cancel
           </button>
        </div>
     </div>
