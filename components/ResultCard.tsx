@@ -28,7 +28,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
         <button onClick={onBack} className="w-10 h-10 border border-border-light dark:border-border-dark flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all">
           <span className="material-symbols-outlined">arrow_back</span>
         </button>
-        <h2 className="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">Forensic Record</h2>
+        <h2 className="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">Diagnosis Report</h2>
         <div className="w-10"></div>
       </header>
 
@@ -38,10 +38,10 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
           <div className="p-5 bg-primary/5 border border-primary/20 flex gap-4 items-center animate-in fade-in slide-in-from-top-4 duration-1000">
             <span className="material-symbols-outlined text-primary text-xl">info</span>
             <div className="space-y-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-primary italic">Forensic Alert: Protocol Alignment</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-primary italic">Quick Tip</p>
               <p className="text-[9px] font-bold uppercase opacity-60 leading-relaxed">
-                Selection: <span className="text-primary">{record.category}</span> // Forensic ID: <span className="text-primary">{identified_category}</span>. 
-                For optimized detection accuracy in future sweeps, please ensure the category matches your hardware.
+                You selected: <span className="text-primary">{record.category}</span> but we detected: <span className="text-primary">{identified_category}</span>. 
+                Next time, try selecting the correct category for better results.
               </p>
             </div>
           </div>
@@ -64,19 +64,19 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
         <section className="space-y-4">
           <div className="flex items-center gap-2 px-2">
              <Icons.Circuit className="text-primary text-sm" />
-             <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Financial Delta Node</h3>
+             <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Value Breakdown</h3>
           </div>
           <div className="grid grid-cols-3 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark divide-x divide-border-light dark:divide-white/10">
              <div className="p-4 text-center">
-                <p className="text-[8px] font-black uppercase opacity-40 mb-2 italic">As-Is</p>
+                <p className="text-[8px] font-black uppercase opacity-40 mb-2 italic">Broken</p>
                 <p className="text-sm font-black font-mono">{formatCurrency(resale_value.unit_value_broken, currency_code)}</p>
              </div>
              <div className="p-4 text-center">
-                <p className="text-[8px] font-black uppercase opacity-40 mb-2 italic">Restored</p>
+                <p className="text-[8px] font-black uppercase opacity-40 mb-2 italic">Fixed</p>
                 <p className="text-sm font-black font-mono">{formatCurrency(resale_value.unit_value_fixed, currency_code)}</p>
              </div>
              <div className="p-4 text-center bg-primary/5 dark:bg-primary/10">
-                <p className="text-[8px] font-black uppercase text-primary mb-2 italic">Net Gain</p>
+                <p className="text-[8px] font-black uppercase text-primary mb-2 italic">Profit</p>
                 <p className="text-sm font-black font-mono text-primary">{formatCurrency(resale_value.profit_potential, currency_code)}</p>
              </div>
           </div>
@@ -87,14 +87,14 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
           <section className="space-y-6">
              <div className="flex items-center gap-2 px-2">
                 <span className="material-symbols-outlined text-primary text-sm">shopping_cart</span>
-                <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Market Analysis</h3>
+                <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Where to Buy</h3>
              </div>
              
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Purchase Options */}
                 {purchase_options?.length > 0 && (
                    <div className="space-y-3">
-                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-1 italic">Procurement</h4>
+                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-1 italic">Buy New Device</h4>
                       <div className="space-y-2">
                          {purchase_options.map((opt, i) => (
                             <a key={i} href={opt.uri} target="_blank" rel="noopener noreferrer" className="block p-4 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark hover:border-primary transition-all">
@@ -114,7 +114,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                 {/* Parts Retailers */}
                 {parts_retailers?.length > 0 && (
                    <div className="space-y-3">
-                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-1 italic">Component Acquisition</h4>
+                      <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-1 italic">Replacement Parts</h4>
                       <div className="space-y-2">
                          {parts_retailers.map((part, i) => (
                             <a key={i} href={part.uri} target="_blank" rel="noopener noreferrer" className="block p-4 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark hover:border-terminal-green transition-all">
@@ -132,7 +132,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
         {/* Recommended Action */}
         <section className="bg-primary dark:bg-white text-white dark:text-black p-8 relative overflow-hidden transition-colors duration-500 shadow-xl">
            <div className="absolute top-0 left-0 w-2 h-full bg-white dark:bg-primary opacity-20 dark:opacity-100"></div>
-           <h4 className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 italic opacity-70">Neural Verdict</h4>
+           <h4 className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 italic opacity-70">Our Recommendation</h4>
            <p className="text-4xl font-black italic uppercase leading-none mb-6 tracking-tighter">{recommended_action}</p>
            <p className="text-xs font-bold leading-relaxed uppercase opacity-80">{reasoning}</p>
         </section>
@@ -142,7 +142,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
           <section className="space-y-4">
              <div className="flex items-center gap-2 px-2">
                 <Icons.Grounded className="text-primary text-sm" />
-                <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Market Grounding</h3>
+                <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Sources</h3>
              </div>
              <div className="flex flex-wrap gap-2">
                 {sources.map((url, i) => (
@@ -158,7 +158,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
         <section className="space-y-4" ref={repairHubsRef}>
           <div className="flex items-center gap-2 px-2">
              <Icons.Radar className="text-primary text-sm" />
-             <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Local Specialists</h3>
+             <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Repair Shops Near You</h3>
           </div>
           <div className="space-y-2">
              {recommended_repair_hubs.map((hub, i) => (
@@ -177,13 +177,13 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
         <section className="pt-10 border-t border-border-light dark:border-white/10 space-y-6">
            <div className="flex items-center gap-2 px-2">
               <span className="material-symbols-outlined text-primary text-sm">build</span>
-              <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Experimental DIY Path</h3>
+              <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Fix It Yourself</h3>
            </div>
 
            {diyState === 'locked' && (
               <div className="p-8 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark space-y-6">
                  <div className="space-y-2">
-                    <p className="text-xs font-black uppercase italic text-hazard">Warning: High Risk Maneuver</p>
+                    <p className="text-xs font-black uppercase italic text-hazard">Warning</p>
                     <p className="text-[10px] font-bold uppercase opacity-60 leading-relaxed">
                        DIY repairs may void warranties, cause permanent data loss, or lead to physical injury (especially involving batteries/voltage).
                     </p>
@@ -192,7 +192,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                   onClick={() => setDiyState('confirm')}
                   className="w-full bg-white dark:bg-white/10 border border-black dark:border-white/20 text-black dark:text-white py-4 text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                  >
-                    Request DIY Protocols
+                    Show Me How
                  </button>
               </div>
            )}
@@ -201,7 +201,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
               <div className="p-8 bg-hazard/5 border border-hazard/30 space-y-6 animate-pulse">
                  <p className="text-center text-sm font-black uppercase italic">Are you absolutely sure?</p>
                  <p className="text-center text-[9px] font-bold uppercase opacity-60">
-                    By proceeding, you acknowledge the risks of hardware failure.
+                    By proceeding, you accept the risks involved.
                  </p>
                  <div className="flex gap-4">
                     <button 
@@ -224,7 +224,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
               <div className="space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
                  {/* Tools */}
                  <div className="space-y-4">
-                    <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-2 italic">Required Hardware</h4>
+                    <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-2 italic">Tools You'll Need</h4>
                     <div className="grid grid-cols-1 gap-2">
                        {required_tools && required_tools.length > 0 ? (
                          required_tools.map((tool, i) => (
@@ -240,7 +240,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                          ))
                        ) : (
                          <div className="p-4 border border-dashed border-border-light dark:border-border-dark opacity-30 text-center">
-                           <p className="text-[10px] italic uppercase">No specialized tools identified by search protocols.</p>
+                           <p className="text-[10px] italic uppercase">No specific tools needed for this repair.</p>
                          </div>
                        )}
                     </div>
@@ -248,7 +248,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
 
                  {/* Guides */}
                  <div className="space-y-4">
-                    <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-2 italic">Instructional Protocols</h4>
+                    <h4 className="text-[9px] font-black uppercase tracking-widest opacity-40 px-2 italic">Repair Guides</h4>
                     <div className="space-y-2">
                        {diy_guides && diy_guides.length > 0 ? (
                          diy_guides.map((guide, i) => (
@@ -268,8 +268,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                          ))
                        ) : (
                          <div className="p-8 border border-dashed border-border-light dark:border-border-dark opacity-40 text-center space-y-2">
-                            <p className="text-[10px] font-black uppercase">No direct guides identified.</p>
-                            <p className="text-[8px] leading-relaxed uppercase">Search protocols failed to verify a direct guide. Please use search platforms or consult a professional.</p>
+                            <p className="text-[10px] font-black uppercase">No guides found</p>
+                            <p className="text-[8px] leading-relaxed uppercase">We couldn't find specific repair guides. Try searching online or contact a professional.</p>
                          </div>
                        )}
                     </div>
@@ -279,7 +279,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                    onClick={scrollToSpecialists}
                    className="w-full py-4 border border-primary text-primary hover:bg-primary hover:text-white text-[10px] font-black uppercase tracking-widest transition-all italic mt-4"
                  >
-                   Escalate to Local Repositories
+                   Find a Repair Shop
                  </button>
               </div>
            )}

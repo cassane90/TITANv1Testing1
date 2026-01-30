@@ -21,7 +21,7 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       if (videoRef.current) videoRef.current.srcObject = stream;
     } catch (e) {
-      alert("LENS_OFFLINE");
+      alert("Camera not available");
       setStep('intake');
     }
   };
@@ -60,7 +60,7 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
   const handleAudit = async () => {
     if (images.length === 0) return;
     setStep('synthesis');
-    setStatus("Establishing Geolocation Link...");
+    setStatus("Getting your location...");
     
     let location = undefined;
     try {
@@ -81,21 +81,21 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
     try {
       let result;
       if (cachedResult) {
-        setStatus("Loading Cached Forensic Data...");
+        setStatus("Loading saved results...");
         result = cachedResult;
       } else {
-        setStatus("Grounded Node Handshake...");
+        setStatus("Analyzing your device...");
         result = await runForensicAudit(category, desc, images, location);
         // Store in cache for future users
         cacheService.set(category, desc, result, location?.latitude, location?.longitude);
       }
       
-      setStatus("Syncing Forensic Log...");
+      setStatus("Saving results...");
       const log = await supabaseService.saveLog(category, desc, images, result);
       await refreshState();
       onSuccess(log);
     } catch (e) {
-      alert("SYNTHESIS_FAILURE");
+      alert("Analysis failed. Please try again.");
       setStep('intake');
     }
   };
@@ -103,7 +103,7 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
   if (step === 'synthesis') return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] p-10 text-center animate-pulse">
       <div className="w-16 h-16 border-2 border-primary border-t-transparent animate-spin mb-8"></div>
-      <h2 className="text-2xl font-black uppercase italic tracking-tighter text-black dark:text-white transition-colors">Neural Lab Active</h2>
+      <h2 className="text-2xl font-black uppercase italic tracking-tighter text-black dark:text-white transition-colors">Analyzing</h2>
       <p className="text-[10px] font-bold text-primary uppercase tracking-[0.5em] mt-2">{status}</p>
     </div>
   );
