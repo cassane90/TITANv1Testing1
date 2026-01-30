@@ -3,7 +3,7 @@ import { DiagnosisResult, DeviceCategory, ChatMessage } from "../../types";
 
 // Use import.meta.env for Vite environment variables
 function getAI() {
-  return new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+  return new GoogleGenerativeAI(import.meta.env.VITE_TITAN_CORE_KEY);
 }
 
 /**
@@ -38,9 +38,9 @@ export async function runForensicAudit(
     3. BRAND AUTHENTICITY: Distinguish between genuine brands and "white-label" or knock-off variants.
 
     SPECIALIST SEARCH MANDATE:
-    1. Use Google Search to find REAL, ACTIVE local electronic repair specialists near the user's coordinates.
+    1. Use external search protocols to find REAL, ACTIVE local electronic repair specialists near the user's coordinates.
     2. STRICT BLACKLIST: DO NOT under any circumstances include "Compu Ghana" or any of its branches/subsidiaries.
-    3. LINK STABILITY: For the 'uri' property, ONLY provide a direct Google Maps search link.
+    3. LINK STABILITY: For the 'uri' property, ONLY provide a direct map registry search link.
 
     DIY SEARCH MANDATE:
     1. STABLE SEARCH STRATEGY: You MUST provide TWO STABLE YouTube search URLs in the 'diy_guides' array:
@@ -191,8 +191,8 @@ export async function runForensicAudit(
           !hub.name.toLowerCase().includes("compu ghana")
         )
         .map(hub => {
-          // Safety Catch: If the hub URI is hallucinated or missing, force a Google Maps search
-          if (!hub.uri.includes('google.com/maps') || hub.uri.includes('placeholder')) {
+          // Safety Catch: If the hub URI is hallucinated or missing, force a map registry search
+          if (!hub.uri.includes('maps') || hub.uri.includes('placeholder')) {
             const query = encodeURIComponent(`${hub.name} ${hub.address}`);
             hub.uri = `https://www.google.com/maps/search/?api=1&query=${query}`;
           }
@@ -237,11 +237,11 @@ export async function chatWithAssistant(message: string): Promise<ChatMessage> {
 }
 
 export async function generateReferenceImage(prompt: string): Promise<string> {
-  // Gemini 1.5 doesn't generate images directly in this SDK. 
+  // Imaging node doesn't generate images directly in this SDK version. 
   // We keep the signature but throw an error or use a placeholder if needed.
-  throw new Error("IMAGING_NODE_OFFLINE: Gemini 1.5 does not support image generation via this SDK.");
+  throw new Error("IMAGING_NODE_OFFLINE: This architecture does not support direct image generation via this node.");
 }
 
 export async function editDeviceImage(base64Image: string, prompt: string): Promise<string> {
-  throw new Error("OVERLAY_NODE_FAILURE: Gemini 1.5 does not support image editing via this SDK.");
+  throw new Error("OVERLAY_NODE_FAILURE: This architecture does not support direct image editing via this node.");
 }

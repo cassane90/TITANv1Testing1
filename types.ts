@@ -80,7 +80,7 @@ export interface DiagnosisResult {
   required_tools?: RepairTool[];
   purchase_options: MarketOption[];
   parts_retailers: PartsRetailer[];
-  /** Grounding evidence URLs from External Search */
+  /** Grounding evidence URLs from Google Search */
   sources?: string[];
   /** Safety check for user-selected vs actual device category */
   category_mismatch?: boolean;
