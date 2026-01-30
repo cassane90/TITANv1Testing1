@@ -161,15 +161,25 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
              <h3 className="text-[10px] font-black tracking-[0.4em] uppercase opacity-40">Repair Shops Near You</h3>
           </div>
           <div className="space-y-2">
-             {recommended_repair_hubs.map((hub, i) => (
-               <a key={i} href={hub.uri} target="_blank" rel="noopener noreferrer" className="block p-5 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark hover:border-primary transition-all group">
-                  <div className="flex justify-between items-start mb-2">
-                     <p className="text-sm font-black uppercase italic group-hover:text-primary">{hub.name}</p>
-                     <span className="text-[10px] font-black text-terminal-green uppercase">{hub.rating} ★</span>
-                  </div>
-                  <p className="text-[9px] font-bold opacity-40 uppercase truncate">{hub.address}</p>
-               </a>
-             ))}
+           <div className="space-y-2">
+             {recommended_repair_hubs && recommended_repair_hubs.length > 0 ? (
+               recommended_repair_hubs.map((hub, i) => (
+                 <a key={i} href={hub.uri} target="_blank" rel="noopener noreferrer" className="block p-5 bg-panel-light dark:bg-white/5 border border-border-light dark:border-border-dark hover:border-primary transition-all group">
+                    <div className="flex justify-between items-start mb-2">
+                       <p className="text-sm font-black uppercase italic group-hover:text-primary">{hub.name}</p>
+                       <span className="text-[10px] font-black text-terminal-green uppercase">{hub.rating} ★</span>
+                    </div>
+                    <p className="text-[9px] font-bold opacity-40 uppercase truncate">{hub.address}</p>
+                 </a>
+               ))
+             ) : (
+               <div className="p-6 border border-dashed border-border-light dark:border-border-dark opacity-50 text-center space-y-2 bg-panel-light/30 dark:bg-white/5">
+                  <span className="material-symbols-outlined text-xl opacity-50">location_off</span>
+                  <p className="text-[10px] font-black uppercase">Location Required</p>
+                  <p className="text-[8px] leading-relaxed uppercase">We can't find local shops without your location. Enable location services to unlock this feature.</p>
+               </div>
+             )}
+           </div>
           </div>
         </section>
 

@@ -65,15 +65,17 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
     
     let location = undefined;
     try {
+      // OPTIONAL LOCATION: We ask, but don't insist. 
+      // Short timeout (3s) so users aren't waiting if they ignore the prompt.
       const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, { 
-          timeout: 8000,
+          timeout: 3000, 
           enableHighAccuracy: false
         });
       });
       location = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
     } catch (e) {
-      console.warn("GEOLOCATION_TIMEOUT: Proceeding with global standard.");
+      console.warn("LOCATION_SKIPPED: User denied or timed out. Proceeding with global defaults.");
     }
 
     // AI HANDSHAKE: Check cache first to avoid redundant AI usage
