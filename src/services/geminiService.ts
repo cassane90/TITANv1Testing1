@@ -26,9 +26,11 @@ export async function runForensicAudit(
        2. Use this country to find LOCAL hardware/tool retailers (e.g., if in Ghana, look for Franko Trading, Jumia Ghana, or local markets).` 
     : "The user's location is unknown; default to USD and global retailers (Amazon, eBay).";
 
+  const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const prompt = `TITAN FORENSIC PROTOCOL: Execute analysis on hardware component. 
     
     PRIMARY CONTEXT:
+    Current Date: ${currentDate} (Use this to identify latest releases like iPhone 17, Galaxy S25, etc.)
     Category: ${category}
     User Description: ${description}
     ${locationContext}
@@ -45,12 +47,11 @@ export async function runForensicAudit(
        - Exact color (e.g., "Starlight", "Midnight", "Deep Purple")
 
     2. MODEL-SPECIFIC FEATURES (MANDATORY):
-       iPhone 14: Standard notch, dual diagonal cameras, aluminum, NO Dynamic Island
-       iPhone 14 Pro: Dynamic Island, triple cameras+LiDAR, stainless steel
-       iPhone 15: Dynamic Island, dual diagonal cameras, USB-C, aluminum, frosted back
-       iPhone 15 Pro: Dynamic Island, triple+LiDAR, titanium, Action Button, USB-C
-       Apply similar logic to ALL brands (Samsung S23 vs S24 camera bump, Pixel 7 vs 8 bar)
-
+       - CHECK RELEASE DATES: Use Google Search to verify if the device matches the LATEST models released up to ${currentDate}.
+       - iPhone 14/15/16/17 Series: Distinguish via Dynamic Island, Action Button, Camera Control Button (iPhone 16+), and lens layout.
+       - Pixel 8/9/10 Series: Check camera bar evolution.
+       - Samsung S24/S25/S26: Check camera ring separation and bezel thickness.
+       
     3. CONFIDENCE SCORING: If angle/lighting prevents precise ID, set confidence <70% and state uncertainty in 'reasoning'.
 
     4. BRAND AUTHENTICITY: Distinguish genuine vs knock-off variants.
@@ -87,6 +88,8 @@ export async function runForensicAudit(
   // Use gemini-flash-latest for efficient and capable diagnostic reasoning
   const model = ai.getGenerativeModel({
     model: "gemini-flash-latest",
+    // @ts-ignore - Google Search is supported in this version but types might lag
+    tools: [{ googleSearch: {} }],
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: {
