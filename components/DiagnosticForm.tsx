@@ -106,7 +106,6 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
       const log = await supabaseService.saveLog(category, desc, images, result);
       await refreshState();
       onSuccess(log);
-      onSuccess(log);
     } catch (e) {
       logError(e, 'DiagnosticForm.handleAudit');
       
@@ -115,6 +114,11 @@ const DiagnosticForm: React.FC<{ onSuccess: (log: any) => void, onCancel: () => 
         msg = e.userMessage;
       } else if (e instanceof Error && e.message.includes('429')) {
          msg = "System Overload. TITAN is at capacity. Please try again in 1 minute.";
+      } else if (e instanceof Error) {
+        console.error("[DIAGNOSIS_ERROR]", e.message);
+        console.error("[DIAGNOSIS_STACK]", e.stack);
+      } else {
+        console.error("[DIAGNOSIS_UNKNOWN_ERROR]", e);
       }
       
       alert(msg);
