@@ -63,6 +63,7 @@ export async function runForensicAudit(
     INTELLIGENT VALIDATION MANDATE:
     1. CATEGORY CHECK: Compare the user-provided 'Category' (${category}) with the actual identified device.
     2. MISMATCH DETECTION: If the user's selection (${category}) does not match the true nature of the device found in the forensic sweep, set 'category_mismatch' to true and 'identified_category' to the correct category (e.g., if they picked smartphone for a laptop). Otherwise, set 'category_mismatch' to false.
+    3. NO-ISSUE DETECTION: If the device appears to be in pristine/excellent condition with NO visible damage (no cracks, scratches, dents, or malfunctions) AND the user description is empty or vague (e.g., just "phone" or "check this"), set 'no_visible_issue' to true. Otherwise, set it to false.
 
     Provide the result in the specified JSON schema.`;
 
@@ -159,9 +160,10 @@ export async function runForensicAudit(
             }
           },
           category_mismatch: { type: SchemaType.BOOLEAN },
-          identified_category: { type: SchemaType.STRING }
+          identified_category: { type: SchemaType.STRING },
+          no_visible_issue: { type: SchemaType.BOOLEAN }
         },
-        required: ["brand", "model", "confidence_score", "risk_level", "recommended_action", "resale_value", "recommended_repair_hubs", "diy_guides", "required_tools", "purchase_options", "parts_retailers", "category_mismatch", "identified_category"]
+        required: ["brand", "model", "confidence_score", "risk_level", "recommended_action", "resale_value", "recommended_repair_hubs", "diy_guides", "required_tools", "purchase_options", "parts_retailers", "category_mismatch", "identified_category", "no_visible_issue"]
       }
     }
   });

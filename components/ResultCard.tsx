@@ -11,7 +11,7 @@ interface ResultCardProps {
 const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
   const { 
     brand, model, confidence_score, risk_level, reasoning, recommended_action, resale_value, currency_code, recommended_repair_hubs, sources,
-    diy_guides, required_tools, purchase_options, parts_retailers, category_mismatch, identified_category
+    diy_guides, required_tools, purchase_options, parts_retailers, category_mismatch, identified_category, no_visible_issue
   } = record.ai_response;
 
   const [diyState, setDiyState] = React.useState<'locked' | 'confirm' | 'unlocked'>('locked');
@@ -43,6 +43,23 @@ const ResultCard: React.FC<ResultCardProps> = ({ record, onBack }) => {
                 You selected: <span className="text-primary">{record.category}</span> but we detected: <span className="text-primary">{identified_category}</span>. 
                 Next time, try selecting the correct category for better results.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* No Visible Issue Alert */}
+        {no_visible_issue && (
+          <div className="p-6 bg-yellow-500/10 border-2 border-yellow-500/30 flex gap-4 items-start animate-in fade-in slide-in-from-top-4 duration-1000">
+            <span className="material-symbols-outlined text-yellow-500 text-2xl">help</span>
+            <div className="space-y-2 flex-1">
+              <p className="text-[11px] font-black uppercase tracking-widest text-yellow-500 italic">No Obvious Issue Detected</p>
+              <p className="text-[10px] font-bold uppercase opacity-80 leading-relaxed">
+                This device appears to be in good condition with no visible damage. 
+                <span className="text-yellow-500"> Please describe the specific issue you're experiencing</span> (e.g., "won't turn on", "battery drains fast", "screen flickering") so we can provide an accurate diagnosis.
+              </p>
+              <button onClick={onBack} className="mt-3 px-4 py-2 bg-yellow-500 text-black text-[9px] font-black uppercase tracking-widest hover:bg-yellow-400 transition-colors">
+                Add Issue Description
+              </button>
             </div>
           </div>
         )}

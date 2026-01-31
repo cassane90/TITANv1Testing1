@@ -86,6 +86,8 @@ export interface DiagnosisResult {
   category_mismatch?: boolean;
   /** The actual category identified by the forensic sweep */
   identified_category?: string;
+  /** Flag when device appears pristine with no user-described issues */
+  no_visible_issue?: boolean;
 }
 
 export interface QueryRecord {
