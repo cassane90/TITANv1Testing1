@@ -33,10 +33,27 @@ export async function runForensicAudit(
     User Description: ${description}
     ${locationContext}
 
-    HYPER-ACCURATE IDENTIFICATION MANDATE:
-    1. FORENSIC SCRUTINY: Analyze every pixel for serial numbers, FCC IDs, regulatory markings, and unique port configurations.
-    2. REDUNDANT VERIFICATION: Cross-reference visual cues with known hardware manifests. If unsure, provide the most likely candidate with a granular confidence score.
-    3. BRAND AUTHENTICITY: Distinguish between genuine brands and "white-label" or knock-off variants.
+    HYPER-ACCURATE IDENTIFICATION MANDATE (CRITICAL - ZERO TOLERANCE FOR MISIDENTIFICATION):
+    1. FORENSIC SCRUTINY: Analyze EVERY pixel for:
+       - Serial numbers, IMEI, model numbers (back/SIM tray)
+       - FCC IDs, regulatory markings (CE, IC)
+       - Port type (USB-C vs Lightning), headphone jack presence
+       - Camera module: lens count, flash position, LiDAR sensor
+       - Buttons: volume, power, action button, mute switch location
+       - Screen: notch size/shape, Dynamic Island, hole-punch, bezels
+       - Materials: matte, glossy, frosted glass, aluminum, titanium
+       - Exact color (e.g., "Starlight", "Midnight", "Deep Purple")
+
+    2. MODEL-SPECIFIC FEATURES (MANDATORY):
+       iPhone 14: Standard notch, dual diagonal cameras, aluminum, NO Dynamic Island
+       iPhone 14 Pro: Dynamic Island, triple cameras+LiDAR, stainless steel
+       iPhone 15: Dynamic Island, dual diagonal cameras, USB-C, aluminum, frosted back
+       iPhone 15 Pro: Dynamic Island, triple+LiDAR, titanium, Action Button, USB-C
+       Apply similar logic to ALL brands (Samsung S23 vs S24 camera bump, Pixel 7 vs 8 bar)
+
+    3. CONFIDENCE SCORING: If angle/lighting prevents precise ID, set confidence <70% and state uncertainty in 'reasoning'.
+
+    4. BRAND AUTHENTICITY: Distinguish genuine vs knock-off variants.
 
     SPECIALIST SEARCH MANDATE:
     1. Use Google Search to find REAL, ACTIVE local electronic repair specialists near the user's coordinates.
